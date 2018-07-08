@@ -1,4 +1,4 @@
-# miracle_morning
+# Miracle Morning
 
 A new Flutter project.
 
