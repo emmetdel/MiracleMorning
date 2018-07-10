@@ -1,42 +1,39 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import './screens/login.dart';
+import './screens/sign_up.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(new MaterialApp(
+      home: MiracleMorning(),
+      routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => new Login(),
+        '/signup': (BuildContext context) => new SignUp(),
+      },
+    ));
 
-class MyApp extends StatelessWidget {
+class MiracleMorning extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  checkIfLoggedIn(BuildContext context) async {
+    FirebaseUser user = await _auth.currentUser();
+    if (user != null) {
+      Navigator.of(context).pushNamed('/signup');
+    } else {
+      Navigator.of(context).pushNamed('/login');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-        debugShowCheckedModeBanner: false,
-        // debugShowMaterialGrid: true,
-        // showPerformanceOverlay: true,
-        theme: new ThemeData(
-          primarySwatch: Colors.blue,
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Miracle Morning',
+          style: TextStyle(fontSize: 35.0),
         ),
-        home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0.0,
-            leading: IconButton(
-              icon: Icon(
-                Icons.menu,
-                color: Colors.black,
-              ),
-              onPressed: () => print("touched"),
-            ),
-            actions: <Widget>[
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.menu, color: Colors.white),
-                ),
-              )
-            ],
-            centerTitle: true,
-            title: Text(
-              "Miracle Morning",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ));
+      ),
+    );
   }
 }
