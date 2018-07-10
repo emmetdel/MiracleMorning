@@ -1,38 +1,52 @@
-import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import './screens/login.dart';
 import './screens/sign_up.dart';
 
-void main() => runApp(new MaterialApp(
-      home: MiracleMorning(),
-      routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => new Login(),
-        '/signup': (BuildContext context) => new SignUp(),
-      },
-    ));
+void main() {
+  runApp(new MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: new SplashScreen(),
+    routes: <String, WidgetBuilder>{
+      '/login': (BuildContext context) => new Login(),
+      '/signup': (BuildContext context) => new SignUp()
+    },
+  ));
+}
 
-class MiracleMorning extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => new _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  checkIfLoggedIn(BuildContext context) async {
+  checkIfLoggedIn() async {
     FirebaseUser user = await _auth.currentUser();
     if (user != null) {
-      Navigator.of(context).pushNamed('/signup');
+      navigationPage("/signup");
     } else {
-      Navigator.of(context).pushNamed('/login');
+      navigationPage("/login");
     }
+  }
+
+  void navigationPage(String route) {
+    Navigator.of(context).pushReplacementNamed(route);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfLoggedIn();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'Miracle Morning',
-          style: TextStyle(fontSize: 35.0),
-        ),
+    return new Scaffold(
+      body: new Center(
+        child: new Text("Miracle Morning", style: TextStyle(fontSize: 35.0)),
       ),
     );
   }
