@@ -1,4 +1,4 @@
-package com.example.miraclemorning;
+package com.emmetdelaney.miracleMorning;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
